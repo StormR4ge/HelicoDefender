@@ -19,48 +19,42 @@ local originalKeypressed = nil
 waitingKeyAss = false
 
 local function waitForKey(action, btn)
-    print("Appuie sur une nouvelle touche pour : " .. action)
     waitingKeyAss = true
 
     originalKeypressed = love.keypressed
     love.keypressed = function(newKey)
         if newKey == "escape" then
-            print("Annulation d'assignation de touche")
             love.keypressed = nil
             waitingKeyAss = false
             love.keypressed = originalKeypressed
             originalKeypressed = nil
             return
         end
-        keybindings.changeKey(action, newKey)
-        print("Nouvelle touche pour " .. action .. " : " .. newKey)
-        setupButtons()
 
+        if (action == "shoot" or action == "gatling") and (newKey ~= "1" and newKey ~= "2") then
+            return
+        end
+
+        keybindings.changeKey(action, newKey)
+        setupButtons()
         waitingKeyAss = false
         love.keypressed = originalKeypressed
         originalKeypressed = nil
     end
 
     love.mousepressed = function(x, y, button, istouch, presses)
-        if button == 1 and waitingKeyAss == true then
+        if button == 1 and waitingKeyAss == true and (action == "shoot" or action == "gatling") then
             keybindings.changeKey(action, "1")
-            print("Nouvelle touche pour " .. action .. " : mouse")
-            setupButtons()
-
-            waitingKeyAss = false
-            love.keypressed = originalKeypressed
-            originalMousepressed = nil
+        elseif button == 2 and waitingKeyAss == true and (action == "shoot" or action == "gatling") then
+            keybindings.changeKey(action, "2")
         else
-            if button == 2 and waitingKeyAss == true then
-                keybindings.changeKey(action, "2")
-                print("Nouvelle touche pour " .. action .. " : mouse")
-                setupButtons()
-
-                waitingKeyAss = false
-                love.keypressed = originalKeypressed
-                originalMousepressed = nil
-            end
+            return
         end
+
+        setupButtons()
+        waitingKeyAss = false
+        love.keypressed = originalKeypressed
+        originalMousepressed = nil
     end
 end
 
