@@ -37,7 +37,6 @@ function sceneMenu.load()
                 require("scenes/sceneManager").setScene(require("scenes/sceneGame"))
                 menuMusic:stop()
                 isInGame = "game"
-                print("Enter to Scene Game")
             end,
             imageStart,
             imageStartPress
@@ -50,7 +49,6 @@ function sceneMenu.load()
             function()
                 require("scenes/sceneManager").setScene(require("scenes/sceneSettings"))
                 isInGame = "settings"
-                print("Going to settings")
             end,
             imageSetting,
             imageSettingPress
