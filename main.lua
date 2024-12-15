@@ -6,7 +6,7 @@ function love.load()
     imports.sceneManager.load()
     globalFont = love.graphics.newFont("assets/fonts/CarterOne-Regular.ttf", 30)
     love.graphics.setFont(globalFont)
-    love.mouse.setVisible(true)
+    love.mouse.setVisible(false)
     cursorGame = love.graphics.newImage("assets/images/ui/cursor_b.png")
     cursorDefault = love.graphics.newImage("assets/images/ui/cursor_a.png")
     cursor = cursorDefault
