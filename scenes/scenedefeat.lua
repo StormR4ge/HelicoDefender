@@ -4,8 +4,8 @@ local width, height = utils.getScreenDimensions()
 
 local gameOver = love.graphics.newImage("assets/images/ui/gameover.png")
 
-gameOverOriginX = gameOver:getWidth() / 2
-gameOverOriginY = gameOver:getHeight() / 2
+gameOverOriginX = gameOver:getWidth() * 0.5
+gameOverOriginY = gameOver:getHeight() * 0.5
 
 function scenedefeat.draw()
     love.graphics.setColor(1, 1, 1)

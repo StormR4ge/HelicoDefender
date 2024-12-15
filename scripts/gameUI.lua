@@ -19,10 +19,10 @@ local chronos = love.graphics.newImage("assets/images/ui/Common/chronos.png")
 local needle = love.graphics.newImage("assets/images/ui/Common/needle.png")
 
 gameUI = {}
-chronosOriginX = chronos:getWidth() / 2
-chronosOriginY = chronos:getHeight() / 2
-needleOriginX = needle:getWidth() / 2
-needleOriginY = needle:getHeight() / 2
+chronosOriginX = chronos:getWidth() * 0.5
+chronosOriginY = chronos:getHeight() * 0.5
+needleOriginX = needle:getWidth() * 0.5
+needleOriginY = needle:getHeight() * 0.5
 
 local hW, hH = 81, 71
 local barMaxWidth = 272
@@ -64,7 +64,7 @@ function gameUI.draw()
     love.graphics.draw(goldUI, 1851, 24)
 
     local progress = spawnTimer / spawnIncTimer -- Proportion de temps restant
-    local angle = -math.pi / 2 - progress * 2 * math.pi -- Commence à 12h (top)
+    local angle = -math.pi * 0.5 - progress * 2 * math.pi -- Commence à 12h (top)
 
     love.graphics.draw(chronos, 1855, 1010, 0, 1, 1, chronosOriginX, chronosOriginY)
     love.graphics.draw(needle, 1855, 1010, angle, 1, 1, needleOriginX, needleOriginY)

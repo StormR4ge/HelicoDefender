@@ -102,16 +102,16 @@ function button.draw(button, x, y, width, height, waitingKeyAss)
     love.graphics.setColor(0, 0, 0, 1)
     local textW = globalFont:getWidth(button.text)
     local textH = globalFont:getHeight(button.text)
-    love.graphics.print(button.text, globalFont, x + (width - textW) / 2, y + (height - textH) / 2)
+    love.graphics.print(button.text, globalFont, x + (width - textW) * 0.5, y + (height - textH) * 0.5)
 
     if button.price and button.price ~= 0 then
         local priceText = tostring(button.price)
         local priceW = globalFont:getWidth(priceText)
         love.graphics.setColor(1, 1, 0)
-        love.graphics.print(priceText, x + (width - priceW) / 2, y + height - 125)
+        love.graphics.print(priceText, x + (width - priceW) * 0.5, y + height - 125)
         local iconWidth = priceIcon:getWidth()
         local iconHeight = priceIcon:getHeight()
-        love.graphics.draw(priceIcon, x + (width + priceW) / 2 + 10, y + height - 115)
+        love.graphics.draw(priceIcon, x + (width + priceW) * 0.5 + 10, y + height - 115)
     end
 
     button.last = button.now

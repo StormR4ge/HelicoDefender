@@ -24,8 +24,8 @@ function player.pause()
     end
 end
 function player.load()
-    player.x = width / 2
-    player.y = height / 2
+    player.x = width * 0.5
+    player.y = height * 0.5
     player.radius = 70
     player.speed = 200
     player.attackRadius = 15
@@ -185,10 +185,10 @@ function player.update(dt)
         player.gatlingOverheat = math.max(0, player.gatlingOverheat - player.overheatCooldown * dt)
     end
 
-    player.attackRX = player.x + player.attackRadius * math.cos(playerAngle + math.pi / 2)
-    player.attackRY = player.y + player.attackRadius * math.sin(playerAngle + math.pi / 2)
-    player.attackLX = player.x + player.attackRadius * math.cos(playerAngle - math.pi / 2)
-    player.attackLY = player.y + player.attackRadius * math.sin(playerAngle - math.pi / 2)
+    player.attackRX = player.x + player.attackRadius * math.cos(playerAngle + math.pi * 0.5)
+    player.attackRY = player.y + player.attackRadius * math.sin(playerAngle + math.pi * 0.5)
+    player.attackLX = player.x + player.attackRadius * math.cos(playerAngle - math.pi * 0.5)
+    player.attackLY = player.y + player.attackRadius * math.sin(playerAngle - math.pi * 0.5)
 
     player.gatlingX = player.x + player.radius * math.cos(playerAngle)
     player.gatlingY = player.y + player.radius * math.sin(playerAngle)
@@ -208,8 +208,8 @@ function player:drawMissiles()
                 missile.angle,
                 1,
                 1,
-                imageMissile:getWidth() / 2,
-                imageMissile:getHeight() / 2
+                imageMissile:getWidth() * 0.5,
+                imageMissile:getHeight() * 0.5
             )
         end
     end
@@ -224,8 +224,8 @@ function player.draw()
         playerAngle,
         1,
         1,
-        imagePlayer:getWidth() / 2,
-        imagePlayer:getHeight() / 2
+        imagePlayer:getWidth() * 0.5,
+        imagePlayer:getHeight() * 0.5
     )
     love.graphics.draw(
         imagePlayer,
@@ -234,8 +234,8 @@ function player.draw()
         playerAngle,
         1,
         1,
-        imagePlayer:getWidth() / 2,
-        imagePlayer:getHeight() / 2
+        imagePlayer:getWidth() * 0.5,
+        imagePlayer:getHeight() * 0.5
     )
 
     player:drawMissiles()

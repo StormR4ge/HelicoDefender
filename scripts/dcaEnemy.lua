@@ -68,8 +68,8 @@ local function newDCAEnemy(x, y, r, s, health)
             self.rotation,
             1,
             1,
-            self.image:getWidth() / 2,
-            self.image:getHeight() / 2
+            self.image:getWidth() * 0.5,
+            self.image:getHeight() * 0.5
         )
 
         love.graphics.draw(
@@ -79,8 +79,8 @@ local function newDCAEnemy(x, y, r, s, health)
             self.rotationTurret,
             1,
             1,
-            self.turretimage:getWidth() / 2,
-            self.turretimage:getHeight() / 2
+            self.turretimage:getWidth() * 0.5,
+            self.turretimage:getHeight() * 0.5
         )
     end
 
