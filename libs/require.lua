@@ -15,6 +15,7 @@ return {
     gameUI = require("scripts/gameUI"),
     --libs
     button = require("libs/button"),
+    audioManager = require("libs/audioManager"),
     keybindings = require("libs/keybindings"),
     json = require("libs/json"),
     utils = require("libs/utils")

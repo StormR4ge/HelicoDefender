@@ -1,7 +1,9 @@
 local utils = {}
 local wallet = require("scripts/wallet")
+local audioManager = require("libs/audioManager")
 kill = 0
 impactMissileSound = love.audio.newSource("assets/sounds/effects/impactMissile.mp3", "static")
+audioManager.registerSound(impactMissileSound)
 
 local screenWidth, screenHeight = love.graphics.getDimensions()
 

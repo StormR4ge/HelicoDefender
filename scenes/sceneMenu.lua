@@ -2,6 +2,7 @@ local sceneMenu = {}
 local button = require("libs/button")
 local utils = require("libs/utils")
 local ww, wh = utils.getScreenDimensions()
+local keybindings = require("libs/keybindings")
 local menuMusic
 
 local backGround = love.graphics.newImage("assets/images/ui/bg_01.png")
@@ -15,6 +16,8 @@ local imageSettingPress = love.graphics.newImage("assets/images/ui/btn_cicle_set
 local imageClose = love.graphics.newImage("assets/images/ui/btn_cicle_close_red.png")
 local imageClosePress = love.graphics.newImage("assets/images/ui/btn_cicle_close_green.png")
 
+local audioManager = require("libs/audioManager")
+
 local buttons = {}
 
 function sceneMenu.unload()
@@ -26,8 +29,15 @@ end
 function sceneMenu.load()
     menuMusic = love.audio.newSource("assets/sounds/music/menu_theme.mp3", "stream")
     menuMusic:setLooping(true)
-    menuMusic:setVolume(0.1)
+
+    local globalVolume = keybindings.config.volume
+    local scaledVolume = globalVolume * 0.1
+    menuMusic:setVolume(scaledVolume)
+
+    audioManager.registerSound(menuMusic)
+
     menuMusic:play()
+
     buttons = {}
     table.insert(
         buttons,

@@ -3,6 +3,8 @@ local imports = require("libs/require")
 function love.load()
     love.window.setTitle("helicoDefender")
     imports.keybindings.load()
+    local globalVolume = imports.keybindings.config.volume or 1
+    imports.audioManager.setGlobalVolume(globalVolume)
     imports.sceneManager.load()
     globalFont = love.graphics.newFont("assets/fonts/CarterOne-Regular.ttf", 30)
     love.graphics.setFont(globalFont)
@@ -34,4 +36,12 @@ end
 
 function love.keypressed(key)
     imports.sceneManager.keypressed(key)
+end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    imports.sceneManager.mousepressed(x, y, button, istouch, presses)
+end
+
+function love.mousemoved(x, y, dx, dy)
+    imports.sceneManager.mousemoved(x, y, dx, dy)
 end

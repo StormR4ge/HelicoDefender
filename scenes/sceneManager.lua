@@ -70,6 +70,15 @@ function sceneManager.mousepressed(x, y, button, istouch, presses)
     end
 end
 
+function sceneManager.mousemoved(x, y, dx, dy)
+    if overlayScene and overlayScene.mousemoved then
+        overlayScene.mousemoved(x, y, dx, dy)
+    end
+    if currentScene and currentScene.mousemoved then
+        currentScene.mousemoved(x, y, dx, dy)
+    end
+end
+
 -- Scène par défaut
 local sceneMenu = require("scenes/sceneMenu")
 sceneManager.setScene(sceneMenu)

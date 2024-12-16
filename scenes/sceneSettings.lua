@@ -1,6 +1,8 @@
 local button = require("libs/button")
 local keybindings = require("libs/keybindings")
 local utils = require("libs/utils")
+local audioManager = require("libs/audioManager")
+local BASE_VOLUME = audioManager.BASE_VOLUME
 local ww, wh = utils.getScreenDimensions()
 
 local backGround = love.graphics.newImage("assets/images/ui/bg_01.png")
@@ -13,6 +15,12 @@ local barreInfo = love.graphics.newImage("assets/images/ui/info.png")
 local marge = 20
 
 local sceneSettings = {}
+
+local sliderX, sliderY = ww * 0.5, wh * 0.75
+local sliderWidth, sliderHeight = 200, 20
+local handleX = sliderX
+local globalVolume = 1
+local onVolumeChangeCallback = nil
 
 local buttonsKey = {}
 local originalKeypressed = nil
@@ -61,42 +69,42 @@ end
 function setupButtons()
     buttons = {
         button.new(
-            "Up : " .. keybindings.keysConfig.up,
+            "Up : " .. keybindings.config.keysConfig.up,
             function()
                 waitForKey("up", buttons[1])
             end,
             imageBt
         ),
         button.new(
-            "Down : " .. keybindings.keysConfig.down,
+            "Down : " .. keybindings.config.keysConfig.down,
             function()
                 waitForKey("down", buttons[2])
             end,
             imageBt
         ),
         button.new(
-            "Left : " .. keybindings.keysConfig.left,
+            "Left : " .. keybindings.config.keysConfig.left,
             function()
                 waitForKey("left", buttons[3])
             end,
             imageBt
         ),
         button.new(
-            "Right : " .. keybindings.keysConfig.right,
+            "Right : " .. keybindings.config.keysConfig.right,
             function()
                 waitForKey("right", buttons[4])
             end,
             imageBt
         ),
         button.new(
-            "shoot : " .. keybindings.keysConfig.shoot,
+            "shoot : " .. keybindings.config.keysConfig.shoot,
             function()
                 waitForKey("shoot", buttons[5])
             end,
             imageBt
         ),
         button.new(
-            "gatling : " .. keybindings.keysConfig.gatling,
+            "gatling : " .. keybindings.config.keysConfig.gatling,
             function()
                 waitForKey("gatling", buttons[6])
             end,
@@ -108,6 +116,13 @@ end
 function sceneSettings.load()
     keybindings.load()
     setupButtons()
+
+    globalVolume = keybindings.config.volume
+    handleX = sliderX + sliderWidth * globalVolume
+    onVolumeChangeCallback = callback
+    if onVolumeChangeCallback then
+        onVolumeChangeCallback(globalVolume)
+    end
 end
 
 function sceneSettings.draw()
@@ -118,6 +133,15 @@ function sceneSettings.draw()
 
     love.graphics.draw(settingsBackGround, wh * 0.25)
     love.graphics.draw(settingsImage, ww * 0.5 - 150.1, wh * 0.1)
+
+    love.graphics.setColor(0.5, 0.5, 0.5)
+    love.graphics.rectangle("fill", sliderX, sliderY, sliderWidth, sliderHeight)
+
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("fill", handleX - 5, sliderY - 5, 10, sliderHeight + 10)
+
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("Volume: " .. math.floor(globalVolume * 100) .. "%", sliderX, sliderY - 50)
 
     local buttonWidth = 196
     local buttonHeight = 182
@@ -152,6 +176,34 @@ function sceneSettings.draw()
     end
 end
 
+function sceneSettings.mousepressed(x, y, button)
+    if button == 1 and x >= sliderX and x <= sliderX + sliderWidth and y >= sliderY and y <= sliderY + sliderHeight then
+        handleX = x
+        globalVolume = (handleX - sliderX) / sliderWidth
+
+        local scaledVolume = globalVolume * BASE_VOLUME
+
+        keybindings.changeVolume(globalVolume)
+
+        audioManager.setGlobalVolume(scaledVolume)
+    end
+end
+
+function sceneSettings.mousemoved(x, y, dx, dy)
+    if love.mouse.isDown(1) then
+        if x >= sliderX and x <= sliderX + sliderWidth then
+            handleX = x
+            globalVolume = (handleX - sliderX) / sliderWidth
+
+            local scaledVolume = globalVolume * BASE_VOLUME
+
+            keybindings.changeVolume(globalVolume)
+
+            audioManager.setGlobalVolume(scaledVolume)
+        end
+    end
+end
+
 function sceneSettings.keypressed(key)
     if isInGame == "settings" and key == "escape" then
         require("scenes/sceneManager").setScene(require("scenes/sceneMenu"))
@@ -161,6 +213,10 @@ function sceneSettings.keypressed(key)
         require("scenes/sceneManager").setOverlayScene(require("scenes/scenePause"))
         isInGame = "pause"
     end
+end
+
+function sceneSettings.save()
+    love.filesystem.write("volume.json", tostring(globalVolume))
 end
 
 return sceneSettings

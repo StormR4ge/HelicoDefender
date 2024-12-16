@@ -1,5 +1,6 @@
 local player = {}
 player.missiles = {}
+local audioManager = require("libs/audioManager")
 local utils = require("libs/utils")
 local sceneManager = require("scenes/sceneManager")
 local keybindings = require("libs/keybindings")
@@ -46,6 +47,11 @@ function player.load()
     player.overheatCooldown = 50
     player.gatlingDamage = 10
     player.gatlingBulletSpeed = 1500
+
+    audioManager.registerSound(MissileSound)
+    audioManager.registerSound(gatlingStartShootSound)
+    audioManager.registerSound(gatlingShootSound)
+    audioManager.registerSound(gatlingOverHeatSound)
 end
 
 function player.unload()
@@ -91,21 +97,21 @@ function player.update(dt)
     local mouseX, mouseY = love.mouse.getPosition()
     playerAngle = utils.calculateAngle(player.x, player.y, mouseX, mouseY)
 
-    if love.keyboard.isDown(keybindings.keysConfig.left) then
+    if love.keyboard.isDown(keybindings.config.keysConfig.left) then
         player.x = player.x - player.speed * dt
-    elseif love.keyboard.isDown(keybindings.keysConfig.right) then
+    elseif love.keyboard.isDown(keybindings.config.keysConfig.right) then
         player.x = player.x + player.speed * dt
     end
 
-    if love.keyboard.isDown(keybindings.keysConfig.up) then
+    if love.keyboard.isDown(keybindings.config.keysConfig.up) then
         player.y = player.y - player.speed * dt
-    elseif love.keyboard.isDown(keybindings.keysConfig.down) then
+    elseif love.keyboard.isDown(keybindings.config.keysConfig.down) then
         player.y = player.y + player.speed * dt
     end
 
     player.lastAttackTime = player.lastAttackTime + dt
 
-    if love.mouse.isDown(keybindings.keysConfig.shoot) and player.lastAttackTime >= player.attackSpeed then
+    if love.mouse.isDown(keybindings.config.keysConfig.shoot) and player.lastAttackTime >= player.attackSpeed then
         if player.canShoot then
             if not player.MissileSound then
                 love.audio.play(MissileSound)
@@ -135,7 +141,7 @@ function player.update(dt)
         player.canShoot = true
     end
 
-    if love.mouse.isDown(keybindings.keysConfig.gatling) then
+    if love.mouse.isDown(keybindings.config.keysConfig.gatling) then
         if player.gatlingOverheat < player.maxOverheat then
             player.isGatlingActive = true
             player.lastGatlingShot = player.lastGatlingShot + dt
